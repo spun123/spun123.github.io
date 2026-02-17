@@ -172,10 +172,40 @@
 </head>
 
 <body>
-  <!--
+<!--
     Тут начинается видимая часть страницы (<body>).
     Внутри — одна карточка с заголовком, текстом, таблицей и кнопкой.
   -->
+  <!-- "Карточка товара" на главной -->
+<a class="product" href="product.html">
+  <div class="icon">📦</div>
+  <div class="info">
+    <div class="name">Товар #1</div>
+    <div class="price">1 990 ₽</div>
+  </div>
+</a>
+
+<style>
+  /* Можно вставить эти стили в твой <style> в <head> */
+  .product{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    padding:14px;
+    margin-top:16px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    text-decoration:none;
+    color: inherit;
+  }
+  .product:hover{ background: rgba(255,255,255,.10); }
+  .icon{ font-size:42px; }
+  .name{ font-weight:600; }
+  .price{ margin-top:4px; color:#8fe6a8; font-weight:700; }
+</style>
+
+  
 
   <div class="card">
     <!-- Главный заголовок страницы -->
