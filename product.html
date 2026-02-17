@@ -1,1 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Товар #1</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, #0b0f14, #102a43);
+      color:#e6edf3;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
+    .card{
+      width:min(720px, 100%);
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:22px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    .top{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+    .icon{ font-size:54px; }
+    .title{ font-size:26px; margin:0; }
+    .price{ color:#8fe6a8; font-weight:800; margin-top:6px; }
+    .desc{ margin-top:14px; line-height:1.55; opacity:.95; }
+    .back{
+      display:inline-block;
+      margin-top:18px;
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.08);
+      color:inherit;
+      text-decoration:none;
+    }
+    .back:hover{ background: rgba(255,255,255,.12); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div class="icon">📦</div>
+      <div>
+        <h1 class="title">Товар #1</h1>
+        <div class="price">1 990 ₽</div>
+      </div>
+    </div>
+
+    <div class="desc">
+      <p><b>Описание:</b> это пример карточки товара на отдельной странице.</p>
+      <ul>
+        <li>Характеристика 1</li>
+        <li>Характеристика 2</li>
+        <li>Характеристика 3</li>
+      </ul>
+    </div>
+
+    <!-- Ссылка назад на главную -->
+    <a class="back" href="index.html">← Назад на главную</a>
+  </div>
+</body>
+</html>
 
