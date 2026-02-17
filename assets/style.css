@@ -1,1 +1,194 @@
+/* =========================================================
+   style.css — общие стили для всех страниц сайта.
+   Мы вынесли CSS в отдельный файл, чтобы:
+   - не дублировать стили на каждой странице;
+   - проще было менять дизайн в одном месте.
+   ========================================================= */
+
+/* Общие настройки страницы */
+body {
+  /* Убираем стандартные отступы браузера */
+  margin: 0;
+
+  /* Системный шрифт — выглядит “родным” на Windows/macOS/Linux */
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Темный градиентный фон */
+  background: linear-gradient(135deg, #0b0f14, #102a43);
+
+  /* Цвет текста */
+  color: #e6edf3;
+
+  /* Минимальная высота на весь экран */
+  min-height: 100vh;
+
+  /* Центрируем контент */
+  display: grid;
+  place-items: center;
+
+  /* “Воздух” по краям на маленьких экранах */
+  padding: 24px;
+}
+
+/* Основная "карточка" контейнер */
+.card {
+  /* Ограничиваем ширину: максимум 900px, но не шире экрана */
+  width: min(900px, 100%);
+
+  /* Полупрозрачная подложка */
+  background: rgba(255, 255, 255, 0.06);
+
+  /* Легкая рамка */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  /* Скругление */
+  border-radius: 16px;
+
+  /* Внутренние отступы */
+  padding: 22px;
+
+  /* Тень для “объёма” */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Заголовки */
+h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+/* Подзаголовок/описание */
+.sub {
+  margin: 0 0 14px;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   Каталог товаров (карточки на главной странице)
+   ========================================================= */
+
+.grid {
+  /* Сетка карточек: автоматом в несколько колонок */
+  display: grid;
+  gap: 14px;
+
+  /* minmax(240px, 1fr) — карточки минимум 240px, дальше растягиваются */
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* Карточка товара — это ссылка (<a>), поэтому можно кликать по всему блоку */
+.product {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 14px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+
+  /* Убираем стандартное подчёркивание ссылок */
+  text-decoration: none;
+
+  /* Наследуем цвет текста, чтобы ссылка не была синей */
+  color: inherit;
+}
+
+/* Эффект при наведении мышкой */
+.product:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+/* Иконка товара (эмодзи) */
+.product .icon {
+  font-size: 44px;
+  line-height: 1;
+}
+
+/* Название */
+.product .name {
+  font-weight: 700;
+}
+
+/* Цена */
+.product .price {
+  margin-top: 4px;
+  color: #8fe6a8;
+  font-weight: 800;
+}
+
+/* Маленькая “подсказка” внизу карточки */
+.product .note {
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+/* =========================================================
+   Страница товара
+   ========================================================= */
+
+.top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.big-icon {
+  font-size: 58px;
+  line-height: 1;
+}
+
+.title {
+  margin: 0;
+  font-size: 26px;
+}
+
+.price-big {
+  margin-top: 6px;
+  color: #8fe6a8;
+  font-weight: 900;
+}
+
+.desc {
+  margin-top: 14px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+/* Простая кнопка */
+.btn {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Ссылка “назад” */
+.back {
+  display: inline-block;
+  margin-top: 14px;
+  opacity: 0.85;
+  color: inherit;
+  text-decoration: none;
+}
+
+.back:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
 
