@@ -1,91 +1,226 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <!-- Кодировка, чтобы работали русский текст и эмодзи -->
-  <meta charset="UTF-8" />
-
-  <!-- Для корректного отображения на телефонах -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Заголовок вкладки браузера -->
-  <title>Мини-каталог</title>
-
-  <!-- Иконка вкладки (favicon) — встроенная SVG с эмодзи, без отдельного файла -->
-  <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛒</text></svg>">
-
-  <!-- Подключаем общий CSS файл -->
-  <link rel="stylesheet" href="assets/style.css" />
-</head>
-
-<body>
-  <!-- Основной контейнер -->
-  <div class="card">
-    <h1>Мини-каталог товаров</h1>
-    <p class="sub">
-      На этой странице видно цену и иконку. Нажми на карточку товара — перейдёшь на отдельную страницу с описанием.
-    </p>
-
-    <!-- Сетка карточек товаров -->
-    <div class="grid">
-
-      <!-- Карточка товара №1 -->
-<a class="product" href="products/product-1.html">
-  <!-- Миниатюра товара (путь от index.html: assets/img/...) -->
-  <div class="thumb">
-    <img src="assets/img/box.jpg" alt="Товар #1 — Коробка" loading="lazy">
-  </div>
-
-  <div>
-    <div class="name">“Коробка”</div>
-    <div class="price">1 990 ₽</div>
-    <div class="note">Кликни, чтобы открыть подробности</div>
-  </div>
-</a>
-
-<!-- Карточка товара №2 -->
-<a class="product" href="products/product-2.html">
-  <div class="thumb">
-    <img src="assets/img/headphones.jpg" alt="Товар #2 — Наушники" loading="lazy">
-  </div>
-
-  <div>
-    <div class="name">“Наушники”</div>
-    <div class="price">3 490 ₽</div>
-    <div class="note">Отдельная страница товара</div>
-  </div>
-</a>
-
-<!-- Карточка товара №3 -->
-<a class="product" href="products/product-3.html">
-  <div class="thumb">
-    <img src="assets/img/watch.jpg" alt="Товар #3 — Часы" loading="lazy">
-  </div>
-
-  <div>
-    <div class="name">“Часы”</div>
-    <div class="price">5 990 ₽</div>
-    <div class="note">Открой карточку и описание</div>
-  </div>
-</a>
-
-<!-- Карточка товара №4 -->
-<a class="product" href="products/product-4.html">
-  <div class="thumb thumb--emoji" aria-hidden="true">📺</div>
-
-  <div>
-    <div class="name">“Телевизор”</div>
-    <div class="price">42 990 ₽</div>
-    <div class="note">Новая позиция в каталоге</div>
-  </div>
-</a>
-
-    </div>
-
-    <!-- Небольшая проверка, что JavaScript работает -->
-    <button class="btn" onclick="alert('Главная страница: JS работает ✅')">
-      Проверить JS
-    </button>
-  </div>
-</body>
-</html>
+diff --git a/index.html b/index.html
+index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..b6f1366189bd9831c83a57b3271994c776aed110 100644
+--- a/index.html
++++ b/index.html
+@@ -1,80 +1,215 @@
+ <!DOCTYPE html>
+ <html lang="ru">
+ <head>
+   <!-- Кодировка, чтобы работали русский текст и эмодзи -->
+   <meta charset="UTF-8" />
+ 
+   <!-- Для корректного отображения на телефонах -->
+   <meta name="viewport" content="width=device-width, initial-scale=1" />
+ 
+   <!-- Заголовок вкладки браузера -->
+   <title>Мини-каталог</title>
+ 
+   <!-- Иконка вкладки (favicon) — встроенная SVG с эмодзи, без отдельного файла -->
+   <link rel="icon" type="image/svg+xml"
+         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛒</text></svg>">
+ 
+   <!-- Подключаем общий CSS файл -->
+   <link rel="stylesheet" href="assets/style.css" />
+ </head>
+ 
+ <body>
+   <!-- Основной контейнер -->
+   <div class="card">
+-    <h1>Мини-каталог товаров</h1>
+-    <p class="sub">
+-      На этой странице видно цену и иконку. Нажми на карточку товара — перейдёшь на отдельную страницу с описанием.
+-    </p>
++    <div class="catalog-head">
++      <div>
++        <h1>Мини-каталог товаров</h1>
++        <p class="sub">
++          На этой странице видно цену и иконку. Нажми на карточку товара — перейдёшь на отдельную страницу с описанием.
++        </p>
++      </div>
++
++      <!-- Кнопка с плюсом для открытия формы добавления товара -->
++      <button id="openAddModal" class="btn btn-plus" type="button" aria-label="Добавить товар">+</button>
++    </div>
+ 
+     <!-- Сетка карточек товаров -->
+-    <div class="grid">
++    <div id="productGrid" class="grid">
+ 
+       <!-- Карточка товара №1 -->
+ <a class="product" href="products/product-1.html">
+   <!-- Миниатюра товара (путь от index.html: assets/img/...) -->
+   <div class="thumb">
+     <img src="assets/img/box.jpg" alt="Товар #1 — Коробка" loading="lazy">
+   </div>
+ 
+   <div>
+     <div class="name">“Коробка”</div>
+     <div class="price">1 990 ₽</div>
+     <div class="note">Кликни, чтобы открыть подробности</div>
+   </div>
+ </a>
+ 
+ <!-- Карточка товара №2 -->
+ <a class="product" href="products/product-2.html">
+   <div class="thumb">
+     <img src="assets/img/headphones.jpg" alt="Товар #2 — Наушники" loading="lazy">
+   </div>
+ 
+   <div>
+     <div class="name">“Наушники”</div>
+     <div class="price">3 490 ₽</div>
+     <div class="note">Отдельная страница товара</div>
+   </div>
+ </a>
+ 
+ <!-- Карточка товара №3 -->
+ <a class="product" href="products/product-3.html">
+   <div class="thumb">
+     <img src="assets/img/watch.jpg" alt="Товар #3 — Часы" loading="lazy">
+   </div>
+ 
+   <div>
+     <div class="name">“Часы”</div>
+     <div class="price">5 990 ₽</div>
+     <div class="note">Открой карточку и описание</div>
+   </div>
+ </a>
+ 
++<!-- Карточка товара №4 -->
++<a class="product" href="products/product-4.html">
++  <div class="thumb thumb--emoji" aria-hidden="true">📺</div>
++
++  <div>
++    <div class="name">“Телевизор”</div>
++    <div class="price">42 990 ₽</div>
++    <div class="note">Новая позиция в каталоге</div>
++  </div>
++</a>
++
+     </div>
+ 
+     <!-- Небольшая проверка, что JavaScript работает -->
+-    <button class="btn" onclick="alert('Главная страница: JS работает ✅')">
++    <button class="btn" onclick="alert('Главная страница: JS работает ✅')" type="button">
+       Проверить JS
+     </button>
+   </div>
++
++  <!-- Модальное окно: добавление новой карточки товара -->
++  <div id="addProductModal" class="modal" aria-hidden="true">
++    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="addProductTitle">
++      <div class="modal__head">
++        <h2 id="addProductTitle">Добавить товар</h2>
++        <button id="closeAddModal" class="modal__close" type="button" aria-label="Закрыть окно">×</button>
++      </div>
++
++      <form id="addProductForm" class="form-grid">
++        <label>
++          Название товара
++          <input name="name" type="text" required placeholder="Например: Игровая мышь" />
++        </label>
++
++        <label>
++          Цена (в ₽)
++          <input name="price" type="number" min="1" step="1" required placeholder="4990" />
++        </label>
++
++        <label>
++          Подпись на карточке
++          <input name="note" type="text" required placeholder="Кликни, чтобы открыть подробности" />
++        </label>
++
++        <label>
++          Ссылка на страницу товара
++          <input name="link" type="url" required placeholder="https://example.com/product" />
++        </label>
++
++        <label>
++          Эмодзи (если нет изображения)
++          <input name="emoji" type="text" maxlength="2" value="🛍️" />
++        </label>
++
++        <label>
++          URL картинки (необязательно)
++          <input name="image" type="url" placeholder="https://example.com/image.jpg" />
++        </label>
++
++        <button class="btn" type="submit">Добавить карточку</button>
++      </form>
++    </div>
++  </div>
++
++  <script>
++    const modal = document.getElementById('addProductModal');
++    const openBtn = document.getElementById('openAddModal');
++    const closeBtn = document.getElementById('closeAddModal');
++    const form = document.getElementById('addProductForm');
++    const grid = document.getElementById('productGrid');
++
++    const formatPrice = (value) => `${Number(value).toLocaleString('ru-RU')} ₽`;
++
++    const openModal = () => {
++      modal.classList.add('modal--open');
++      modal.setAttribute('aria-hidden', 'false');
++      form.elements.name.focus();
++    };
++
++    const closeModal = () => {
++      modal.classList.remove('modal--open');
++      modal.setAttribute('aria-hidden', 'true');
++      form.reset();
++    };
++
++    openBtn.addEventListener('click', openModal);
++    closeBtn.addEventListener('click', closeModal);
++
++    modal.addEventListener('click', (event) => {
++      if (event.target === modal) closeModal();
++    });
++
++    document.addEventListener('keydown', (event) => {
++      if (event.key === 'Escape' && modal.classList.contains('modal--open')) {
++        closeModal();
++      }
++    });
++
++    form.addEventListener('submit', (event) => {
++      event.preventDefault();
++
++      const { name, price, note, link, emoji, image } = form.elements;
++
++      const card = document.createElement('a');
++      card.className = 'product';
++      card.href = link.value.trim();
++      card.target = '_blank';
++      card.rel = 'noopener noreferrer';
++
++      const thumb = document.createElement('div');
++      thumb.className = 'thumb';
++
++      if (image.value.trim()) {
++        const img = document.createElement('img');
++        img.src = image.value.trim();
++        img.alt = `Товар — ${name.value.trim()}`;
++        img.loading = 'lazy';
++        thumb.appendChild(img);
++      } else {
++        thumb.classList.add('thumb--emoji');
++        thumb.textContent = emoji.value.trim() || '🛍️';
++        thumb.setAttribute('aria-hidden', 'true');
++      }
++
++      const content = document.createElement('div');
++      content.innerHTML = `
++        <div class="name">“${name.value.trim()}”</div>
++        <div class="price">${formatPrice(price.value)}</div>
++        <div class="note">${note.value.trim()}</div>
++      `;
++
++      card.append(thumb, content);
++      grid.prepend(card);
++      closeModal();
++    });
++  </script>
+ </body>
+ </html>
