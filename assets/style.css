@@ -123,6 +123,14 @@ h1 {
   display: block;
 }
 
+
+.thumb--emoji {
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  line-height: 1;
+}
+
 /* Название */
 .product .name {
   font-weight: 700;
@@ -208,3 +216,96 @@ h1 {
   text-decoration: underline;
 }
 
+
+/* Шапка каталога: текст + кнопка плюс */
+.catalog-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.btn-plus {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 999px;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  margin-top: 0;
+}
+
+/* Модальное окно */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 100;
+}
+
+.modal--open {
+  display: flex;
+}
+
+.modal__dialog {
+  width: min(560px, 100%);
+  background: #111c2a;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.modal__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modal__head h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.modal__close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.form-grid label {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.form-grid input {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.form-grid input::placeholder {
+  color: rgba(230, 237, 243, 0.6);
+}
