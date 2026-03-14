@@ -1,217 +1,182 @@
-/* =========================================================
-   style.css — общие стили для всех страниц сайта.
-   Мы вынесли CSS в отдельный файл, чтобы:
-   - не дублировать стили на каждой странице;
-   - проще было менять дизайн в одном месте.
-   ========================================================= */
-
-/* Общие настройки страницы */
-body {
-  /* Убираем стандартные отступы браузера */
-  margin: 0;
-
-  /* Системный шрифт — выглядит “родным” на Windows/macOS/Linux */
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-
-  /* Темный градиентный фон */
-  background: linear-gradient(135deg, #0b0f14, #102a43);
-
-  /* Цвет текста */
-  color: #e6edf3;
-
-  /* Минимальная высота на весь экран */
-  min-height: 100vh;
-
-  /* Центрируем контент */
-  display: grid;
-  place-items: center;
-
-  /* “Воздух” по краям на маленьких экранах */
-  padding: 24px;
-}
-
-/* Основная "карточка" контейнер */
-.card {
-  /* Ограничиваем ширину: максимум 900px, но не шире экрана */
-  width: min(900px, 100%);
-
-  /* Полупрозрачная подложка */
-  background: rgba(255, 255, 255, 0.06);
-
-  /* Легкая рамка */
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  /* Скругление */
-  border-radius: 16px;
-
-  /* Внутренние отступы */
-  padding: 22px;
-
-  /* Тень для “объёма” */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-}
-
-/* Заголовки */
-h1 {
-  margin: 0 0 8px;
-  font-size: 28px;
-}
-
-/* Подзаголовок/описание */
-.sub {
-  margin: 0 0 14px;
-  opacity: 0.9;
-  line-height: 1.5;
-}
-
-/* =========================================================
-   Каталог товаров (карточки на главной странице)
-   ========================================================= */
-
-.grid {
-  /* Сетка карточек: автоматом в несколько колонок */
-  display: grid;
-  gap: 14px;
-
-  /* minmax(240px, 1fr) — карточки минимум 240px, дальше растягиваются */
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
-/* Карточка товара — это ссылка (<a>), поэтому можно кликать по всему блоку */
-.product {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-
-  padding: 14px;
-  border-radius: 14px;
-
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.06);
-
-  /* Убираем стандартное подчёркивание ссылок */
-  text-decoration: none;
-
-  /* Наследуем цвет текста, чтобы ссылка не была синей */
-  color: inherit;
-}
-
-/* Эффект при наведении мышкой */
-.product:hover {
-  background: rgba(255, 255, 255, 0.10);
-}
-
-/* =========================================================
-   Картинка товара на главной странице (вместо эмодзи)
-   ========================================================= */
-
-/* Универсальная миниатюра/картинка товара: работает везде, не только в .product */
-.thumb {
-  width: 64px;              /* размер области под картинку */
-  height: 64px;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(0, 0, 0, 0.18);
-  flex: 0 0 auto;
-}
-
-.thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;      /* ВПИСЫВАЕТ целиком (без обрезки) */
-  display: block;
-}
-
-
-.thumb--emoji {
-  display: grid;
-  place-items: center;
-  font-size: 34px;
-  line-height: 1;
-}
-
-/* Название */
-.product .name {
-  font-weight: 700;
-}
-
-/* Цена */
-.product .price {
-  margin-top: 4px;
-  color: #8fe6a8;
-  font-weight: 800;
-}
-
-/* Маленькая “подсказка” внизу карточки */
-.product .note {
-  margin-top: 6px;
-  font-size: 12px;
-  opacity: 0.75;
-}
-
-/* =========================================================
-   Страница товара
-   ========================================================= */
-
-.top {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.big-icon {
-  font-size: 58px;
-  line-height: 1;
-}
-
-.title {
-  margin: 0;
-  font-size: 26px;
-}
-
-.price-big {
-  margin-top: 6px;
-  color: #8fe6a8;
-  font-weight: 900;
-}
-
-.desc {
-  margin-top: 14px;
-  line-height: 1.6;
-  opacity: 0.95;
-}
-
-/* Простая кнопка */
-.btn {
-  display: inline-block;
-  margin-top: 14px;
-  padding: 10px 14px;
-  border-radius: 12px;
-
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.08);
-
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  user-select: none;
-}
-
-.btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-/* Ссылка “назад” */
-.back {
-  display: inline-block;
-  margin-top: 14px;
-  opacity: 0.85;
-  color: inherit;
-  text-decoration: none;
-}
-
-.back:hover {
-  opacity: 1;
-  text-decoration: underline;
-}
+diff --git a/assets/style.css b/assets/style.css
+index 7a21bd1a27c6e27abd3d9eff165c4a93f4308787..c299a8747d36e3afbd2dfb9ecfc606ec7f23e623 100644
+--- a/assets/style.css
++++ b/assets/style.css
+@@ -101,50 +101,58 @@ h1 {
+   background: rgba(255, 255, 255, 0.10);
+ }
+ 
+ /* =========================================================
+    Картинка товара на главной странице (вместо эмодзи)
+    ========================================================= */
+ 
+ /* Универсальная миниатюра/картинка товара: работает везде, не только в .product */
+ .thumb {
+   width: 64px;              /* размер области под картинку */
+   height: 64px;
+   border-radius: 12px;
+   overflow: hidden;
+   border: 1px solid rgba(255, 255, 255, 0.12);
+   background: rgba(0, 0, 0, 0.18);
+   flex: 0 0 auto;
+ }
+ 
+ .thumb img {
+   width: 100%;
+   height: 100%;
+   object-fit: contain;      /* ВПИСЫВАЕТ целиком (без обрезки) */
+   display: block;
+ }
+ 
++
++.thumb--emoji {
++  display: grid;
++  place-items: center;
++  font-size: 34px;
++  line-height: 1;
++}
++
+ /* Название */
+ .product .name {
+   font-weight: 700;
+ }
+ 
+ /* Цена */
+ .product .price {
+   margin-top: 4px;
+   color: #8fe6a8;
+   font-weight: 800;
+ }
+ 
+ /* Маленькая “подсказка” внизу карточки */
+ .product .note {
+   margin-top: 6px;
+   font-size: 12px;
+   opacity: 0.75;
+ }
+ 
+ /* =========================================================
+    Страница товара
+    ========================================================= */
+ 
+ .top {
+   display: flex;
+@@ -186,25 +194,118 @@ h1 {
+ 
+   color: inherit;
+   text-decoration: none;
+   cursor: pointer;
+   user-select: none;
+ }
+ 
+ .btn:hover {
+   background: rgba(255, 255, 255, 0.12);
+ }
+ 
+ /* Ссылка “назад” */
+ .back {
+   display: inline-block;
+   margin-top: 14px;
+   opacity: 0.85;
+   color: inherit;
+   text-decoration: none;
+ }
+ 
+ .back:hover {
+   opacity: 1;
+   text-decoration: underline;
+ }
+ 
++
++/* Шапка каталога: текст + кнопка плюс */
++.catalog-head {
++  display: flex;
++  justify-content: space-between;
++  align-items: flex-start;
++  gap: 12px;
++}
++
++.btn-plus {
++  width: 44px;
++  height: 44px;
++  min-width: 44px;
++  border-radius: 999px;
++  font-size: 28px;
++  font-weight: 700;
++  line-height: 1;
++  display: grid;
++  place-items: center;
++  margin-top: 0;
++}
++
++/* Модальное окно */
++.modal {
++  position: fixed;
++  inset: 0;
++  background: rgba(0, 0, 0, 0.65);
++  display: none;
++  align-items: center;
++  justify-content: center;
++  padding: 24px;
++  z-index: 100;
++}
++
++.modal--open {
++  display: flex;
++}
++
++.modal__dialog {
++  width: min(560px, 100%);
++  background: #111c2a;
++  border: 1px solid rgba(255, 255, 255, 0.2);
++  border-radius: 14px;
++  padding: 16px;
++  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
++}
++
++.modal__head {
++  display: flex;
++  justify-content: space-between;
++  align-items: center;
++  margin-bottom: 10px;
++}
++
++.modal__head h2 {
++  margin: 0;
++  font-size: 22px;
++}
++
++.modal__close {
++  appearance: none;
++  border: 0;
++  background: transparent;
++  color: inherit;
++  font-size: 30px;
++  line-height: 1;
++  cursor: pointer;
++  padding: 0 4px;
++}
++
++.form-grid {
++  display: grid;
++  gap: 12px;
++}
++
++.form-grid label {
++  display: grid;
++  gap: 6px;
++  font-size: 14px;
++}
++
++.form-grid input {
++  border: 1px solid rgba(255, 255, 255, 0.22);
++  border-radius: 10px;
++  background: rgba(255, 255, 255, 0.06);
++  color: inherit;
++  padding: 10px 12px;
++  font: inherit;
++}
++
++.form-grid input::placeholder {
++  color: rgba(230, 237, 243, 0.6);
++}
