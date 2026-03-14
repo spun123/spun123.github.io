@@ -1,8 +1,8 @@
 diff --git a/index.html b/index.html
-index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..59a0431644a01c9fb3ade6ac35a1494724e5ab0f 100644
+index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..865c44226a34a3ad8ab135ffc65fc6c695cccd05 100644
 --- a/index.html
 +++ b/index.html
-@@ -1,80 +1,246 @@
+@@ -1,80 +1,281 @@
  <!DOCTYPE html>
  <html lang="ru">
  <head>
@@ -145,6 +145,12 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..59a0431644a01c9fb3ade6ac35a14947
 +          <input name="image" type="text" placeholder="assets/img/new.jpg или https://example.com/image.jpg" />
 +        </label>
 +
++        <label>
++          Картинка с компьютера (необязательно)
++          <input name="imageFile" type="file" accept="image/*" />
++          <span class="field-hint">Файл с ПК (Windows проводник): если выбран, он имеет приоритет над URL.</span>
++        </label>
++
 +        <button class="btn" type="submit">Добавить карточку</button>
 +      </form>
 +    </div>
@@ -161,26 +167,36 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..59a0431644a01c9fb3ade6ac35a14947
 +
 +    const removeDiffArtifacts = () => {
 +      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-+      const toClean = [];
 +
 +      while (walker.nextNode()) {
 +        const node = walker.currentNode;
-+        const value = node.nodeValue?.trim() || '';
++        const raw = node.nodeValue || '';
++        const trimmed = raw.trim();
 +
-+        if (!value) continue;
++        if (!trimmed) continue;
 +
++        // Полностью удаляем служебные строки из unified diff
 +        if (
-+          /^[-+]$/.test(value) ||
-+          /^diff --git /.test(value) ||
-+          /^@@ .*@@$/.test(value)
++          /^diff --git /.test(trimmed) ||
++          /^index [0-9a-f]+\.[0-9a-f]+/.test(trimmed) ||
++          /^@@ .*@@$/.test(trimmed) ||
++          /^---\s/.test(trimmed) ||
++          /^\+\+\+\s/.test(trimmed) ||
++          /^[-+]$/.test(trimmed)
 +        ) {
-+          toClean.push(node);
++          node.nodeValue = '';
++          continue;
++        }
++
++        // Если перед контентом случайно остались "+ " или "- " из diff — убираем их
++        const normalized = raw
++          .replace(/(^|\n)(\s*)[+-]\s(?=\S)/g, '$1$2')
++          .replace(/\n{3,}/g, '\n\n');
++
++        if (normalized !== raw) {
++          node.nodeValue = normalized;
 +        }
 +      }
-+
-+      toClean.forEach((node) => {
-+        node.nodeValue = '';
-+      });
 +    };
 +
 +    removeDiffArtifacts();
@@ -210,10 +226,17 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..59a0431644a01c9fb3ade6ac35a14947
 +      }
 +    });
 +
-+    form.addEventListener('submit', (event) => {
++    const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
++      const reader = new FileReader();
++      reader.onload = () => resolve(reader.result);
++      reader.onerror = () => reject(new Error('Не удалось прочитать файл изображения'));
++      reader.readAsDataURL(file);
++    });
++
++    form.addEventListener('submit', async (event) => {
 +      event.preventDefault();
 +
-+      const { name, price, note, link, emoji, image } = form.elements;
++      const { name, price, note, link, emoji, image, imageFile } = form.elements;
 +
 +      const card = document.createElement('a');
 +      card.className = 'product';
@@ -222,9 +245,21 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..59a0431644a01c9fb3ade6ac35a14947
 +      const thumb = document.createElement('div');
 +      thumb.className = 'thumb';
 +
-+      if (image.value.trim()) {
++      const selectedFile = imageFile.files && imageFile.files[0];
++      let imageSource = image.value.trim();
++
++      if (selectedFile) {
++        try {
++          imageSource = await readFileAsDataUrl(selectedFile);
++        } catch (error) {
++          alert(error.message);
++          return;
++        }
++      }
++
++      if (imageSource) {
 +        const img = document.createElement('img');
-+        img.src = image.value.trim();
++        img.src = imageSource;
 +        img.alt = `Товар — ${name.value.trim()}`;
 +        img.loading = 'lazy';
 +        thumb.appendChild(img);
