@@ -134,6 +134,11 @@
           <input name="image" type="text" placeholder="assets/img/new.jpg или https://example.com/image.jpg" />
         </label>
 
+        <label>
+          Картинка с компьютера (необязательно)
+          <input name="imageFile" type="file" accept="image/*" />
+        </label>
+
         <button class="btn" type="submit">Добавить карточку</button>
       </form>
     </div>
@@ -199,10 +204,17 @@
       }
     });
 
-    form.addEventListener('submit', (event) => {
+    const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error('Не удалось прочитать файл изображения'));
+      reader.readAsDataURL(file);
+    });
+
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      const { name, price, note, link, emoji, image } = form.elements;
+      const { name, price, note, link, emoji, image, imageFile } = form.elements;
 
       const card = document.createElement('a');
       card.className = 'product';
@@ -211,9 +223,21 @@
       const thumb = document.createElement('div');
       thumb.className = 'thumb';
 
-      if (image.value.trim()) {
+      const selectedFile = imageFile.files && imageFile.files[0];
+      let imageSource = image.value.trim();
+
+      if (selectedFile) {
+        try {
+          imageSource = await readFileAsDataUrl(selectedFile);
+        } catch (error) {
+          alert(error.message);
+          return;
+        }
+      }
+
+      if (imageSource) {
         const img = document.createElement('img');
-        img.src = image.value.trim();
+        img.src = imageSource;
         img.alt = `Товар — ${name.value.trim()}`;
         img.loading = 'lazy';
         thumb.appendChild(img);
