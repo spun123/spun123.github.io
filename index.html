@@ -21,13 +21,20 @@
 <body>
   <!-- Основной контейнер -->
   <div class="card">
-    <h1>Мини-каталог товаров</h1>
-    <p class="sub">
-      На этой странице видно цену и иконку. Нажми на карточку товара — перейдёшь на отдельную страницу с описанием.
-    </p>
+    <div class="catalog-head">
+      <div>
+        <h1>Мини-каталог товаров</h1>
+        <p class="sub">
+          На этой странице видно цену и иконку. Нажми на карточку товара — перейдёшь на отдельную страницу с описанием.
+        </p>
+      </div>
+
+      <!-- Кнопка с плюсом для открытия формы добавления товара -->
+      <button id="openAddModal" class="btn btn-plus" type="button" aria-label="Добавить товар">+</button>
+    </div>
 
     <!-- Сетка карточек товаров -->
-    <div class="grid">
+    <div id="productGrid" class="grid">
 
       <!-- Карточка товара №1 -->
 <a class="product" href="products/product-1.html">
@@ -69,12 +76,206 @@
   </div>
 </a>
 
+<!-- Карточка товара №4 -->
+<a class="product" href="products/product-4.html">
+  <div class="thumb thumb--emoji" aria-hidden="true">📺</div>
+
+  <div>
+    <div class="name">“Телевизор”</div>
+    <div class="price">42 990 ₽</div>
+    <div class="note">Новая позиция в каталоге</div>
+  </div>
+</a>
+
     </div>
 
     <!-- Небольшая проверка, что JavaScript работает -->
-    <button class="btn" onclick="alert('Главная страница: JS работает ✅')">
+    <button class="btn" onclick="alert('Главная страница: JS работает ✅')" type="button">
       Проверить JS
     </button>
   </div>
+
+  <!-- Модальное окно: добавление новой карточки товара -->
+  <div id="addProductModal" class="modal" aria-hidden="true">
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="addProductTitle">
+      <div class="modal__head">
+        <h2 id="addProductTitle">Добавить товар</h2>
+        <button id="closeAddModal" class="modal__close" type="button" aria-label="Закрыть окно">×</button>
+      </div>
+
+      <form id="addProductForm" class="form-grid">
+        <label>
+          Название товара
+          <input name="name" type="text" required placeholder="Например: Игровая мышь" />
+        </label>
+
+        <label>
+          Цена (в ₽)
+          <input name="price" type="number" min="1" step="1" required placeholder="4990" />
+        </label>
+
+        <label>
+          Подпись на карточке
+          <input name="note" type="text" required placeholder="Кликни, чтобы открыть подробности" />
+        </label>
+
+        <label>
+          Ссылка на страницу товара
+          <input name="link" type="text" required placeholder="products/new-product.html или https://example.com/product" />
+        </label>
+
+        <label>
+          Эмодзи (если нет изображения)
+          <input name="emoji" type="text" maxlength="2" value="🛍️" />
+        </label>
+
+        <label>
+          URL картинки (необязательно)
+          <input name="image" type="text" placeholder="assets/img/new.jpg или https://example.com/image.jpg" />
+        </label>
+
+        <label>
+          Картинка с компьютера (необязательно)
+          <input name="imageFile" type="file" accept="image/*" />
+          <span class="field-hint">Файл с ПК (Windows проводник): если выбран, он имеет приоритет над URL.</span>
+        </label>
+
+        <button class="btn" type="submit">Добавить карточку</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('addProductModal');
+    const openBtn = document.getElementById('openAddModal');
+    const closeBtn = document.getElementById('closeAddModal');
+    const form = document.getElementById('addProductForm');
+    const grid = document.getElementById('productGrid');
+
+    const formatPrice = (value) => `${Number(value).toLocaleString('ru-RU')} ₽`;
+
+    const removeDiffArtifacts = () => {
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        const raw = node.nodeValue || '';
+        const trimmed = raw.trim();
+
+        if (!trimmed) continue;
+
+        // Полностью удаляем служебные строки из unified diff
+        if (
+          /^diff --git /.test(trimmed) ||
+          /^index [0-9a-f]+\.[0-9a-f]+/.test(trimmed) ||
+          /^@@ .*@@$/.test(trimmed) ||
+          /^---\s/.test(trimmed) ||
+          /^\+\+\+\s/.test(trimmed) ||
+          /^[-+]$/.test(trimmed)
+        ) {
+          node.nodeValue = '';
+          continue;
+        }
+
+        // Если перед контентом случайно остались "+ " или "- " из diff — убираем их
+        const normalized = raw
+          .replace(/(^|\n)(\s*)[+-]\s(?=\S)/g, '$1$2')
+          .replace(/\n{3,}/g, '\n\n');
+
+        if (normalized !== raw) {
+          node.nodeValue = normalized;
+        }
+      }
+    };
+
+    removeDiffArtifacts();
+
+    const openModal = () => {
+      modal.classList.add('modal--open');
+      modal.setAttribute('aria-hidden', 'false');
+      form.elements.name.focus();
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('modal--open');
+      modal.setAttribute('aria-hidden', 'true');
+      form.reset();
+    };
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (event) => {
+      if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && modal.classList.contains('modal--open')) {
+        closeModal();
+      }
+    });
+
+    const readFileAsDataUrl = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(new Error('Не удалось прочитать файл изображения'));
+      reader.readAsDataURL(file);
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const { name, price, note, link, emoji, image, imageFile } = form.elements;
+
+      const card = document.createElement('a');
+      card.className = 'product';
+      card.href = link.value.trim();
+
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+
+      const selectedFile = imageFile.files && imageFile.files[0];
+      let imageSource = image.value.trim();
+
+      if (selectedFile) {
+        try {
+          imageSource = await readFileAsDataUrl(selectedFile);
+        } catch (error) {
+          alert(error.message);
+          return;
+        }
+      }
+
+      if (imageSource) {
+        const img = document.createElement('img');
+        img.src = imageSource;
+        img.alt = `Товар — ${name.value.trim()}`;
+        img.loading = 'lazy';
+        thumb.appendChild(img);
+      } else {
+        thumb.classList.add('thumb--emoji');
+        thumb.textContent = emoji.value.trim() || '🛍️';
+        thumb.setAttribute('aria-hidden', 'true');
+      }
+
+      const content = document.createElement('div');
+      const nameEl = document.createElement('div');
+      nameEl.className = 'name';
+      nameEl.textContent = `“${name.value.trim()}”`;
+
+      const priceEl = document.createElement('div');
+      priceEl.className = 'price';
+      priceEl.textContent = formatPrice(price.value);
+
+      const noteEl = document.createElement('div');
+      noteEl.className = 'note';
+      noteEl.textContent = note.value.trim();
+
+      content.append(nameEl, priceEl, noteEl);
+      card.append(thumb, content);
+      grid.prepend(card);
+      closeModal();
+    });
+  </script>
 </body>
 </html>

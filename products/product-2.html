@@ -3,39 +3,34 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Товар #2</title>
+  <title>Товар #2 — Наушники</title>
   <link rel="stylesheet" href="../assets/style.css" />
 </head>
 
 <body>
   <div class="card">
     <!-- Верхний блок: картинка + название + цена -->
-<div class="top">
+    <div class="top">
+      <div class="thumb thumb--lg">
+        <img src="../assets/img/headphones.jpg" alt="Товар #2 — Наушники" loading="lazy" />
+      </div>
 
-  <!-- Картинка товара:
-       ../ потому что мы внутри папки /products -->
-  <div class="thumb thumb--lg">
-    <img src="../assets/img/headphones.jpg" alt="Товар #2 — Наушники">
-  </div>
-
-  <!-- Текстовая часть: название и цена (один раз, без дублей) -->
-  <div>
-    <h1 class="title">“Наушники”</h1>
-    <div class="price-big">3 490 ₽</div>
-  </div>
-
-</div>
+      <div>
+        <h1 class="title">“Наушники”</h1>
+        <div class="price-big">3 490 ₽</div>
+      </div>
+    </div>
 
     <div class="desc">
-      <p><b>Описание:</b> ещё один пример карточки.</p>
+      <p><b>Описание:</b> комфортные беспроводные наушники для музыки, звонков и игр.</p>
       <ul>
         <li>Тип: накладные</li>
-        <li>Подключение: Bluetooth</li>
+        <li>Подключение: Bluetooth 5.3</li>
         <li>Время работы: до 20 часов</li>
       </ul>
     </div>
 
-    <button class="btn" onclick="alert('Покупка оформлена (демо) ✅')">
+    <button class="btn" type="button" onclick="alert('Покупка оформлена (демо) ✅')">
       Купить
     </button>
 
@@ -45,4 +40,3 @@
   </div>
 </body>
 </html>
-
