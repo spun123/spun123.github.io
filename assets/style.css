@@ -123,6 +123,14 @@ h1 {
   display: block;
 }
 
+
+.thumb--emoji {
+  display: grid;
+  place-items: center;
+  font-size: 34px;
+  line-height: 1;
+}
+
 /* Название */
 .product .name {
   font-weight: 700;
@@ -207,4 +215,3 @@ h1 {
   opacity: 1;
   text-decoration: underline;
 }
-
