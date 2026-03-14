@@ -1,8 +1,8 @@
 diff --git a/index.html b/index.html
-index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..b6f1366189bd9831c83a57b3271994c776aed110 100644
+index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..59a0431644a01c9fb3ade6ac35a1494724e5ab0f 100644
 --- a/index.html
 +++ b/index.html
-@@ -1,80 +1,215 @@
+@@ -1,80 +1,246 @@
  <!DOCTYPE html>
  <html lang="ru">
  <head>
@@ -132,7 +132,7 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..b6f1366189bd9831c83a57b3271994c7
 +
 +        <label>
 +          Ссылка на страницу товара
-+          <input name="link" type="url" required placeholder="https://example.com/product" />
++          <input name="link" type="text" required placeholder="products/new-product.html или https://example.com/product" />
 +        </label>
 +
 +        <label>
@@ -142,7 +142,7 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..b6f1366189bd9831c83a57b3271994c7
 +
 +        <label>
 +          URL картинки (необязательно)
-+          <input name="image" type="url" placeholder="https://example.com/image.jpg" />
++          <input name="image" type="text" placeholder="assets/img/new.jpg или https://example.com/image.jpg" />
 +        </label>
 +
 +        <button class="btn" type="submit">Добавить карточку</button>
@@ -158,6 +158,32 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..b6f1366189bd9831c83a57b3271994c7
 +    const grid = document.getElementById('productGrid');
 +
 +    const formatPrice = (value) => `${Number(value).toLocaleString('ru-RU')} ₽`;
++
++    const removeDiffArtifacts = () => {
++      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
++      const toClean = [];
++
++      while (walker.nextNode()) {
++        const node = walker.currentNode;
++        const value = node.nodeValue?.trim() || '';
++
++        if (!value) continue;
++
++        if (
++          /^[-+]$/.test(value) ||
++          /^diff --git /.test(value) ||
++          /^@@ .*@@$/.test(value)
++        ) {
++          toClean.push(node);
++        }
++      }
++
++      toClean.forEach((node) => {
++        node.nodeValue = '';
++      });
++    };
++
++    removeDiffArtifacts();
 +
 +    const openModal = () => {
 +      modal.classList.add('modal--open');
@@ -192,8 +218,6 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..b6f1366189bd9831c83a57b3271994c7
 +      const card = document.createElement('a');
 +      card.className = 'product';
 +      card.href = link.value.trim();
-+      card.target = '_blank';
-+      card.rel = 'noopener noreferrer';
 +
 +      const thumb = document.createElement('div');
 +      thumb.className = 'thumb';
@@ -211,12 +235,19 @@ index d93e9af8e4780efab04a1ac0fe740a0a7bec8534..b6f1366189bd9831c83a57b3271994c7
 +      }
 +
 +      const content = document.createElement('div');
-+      content.innerHTML = `
-+        <div class="name">“${name.value.trim()}”</div>
-+        <div class="price">${formatPrice(price.value)}</div>
-+        <div class="note">${note.value.trim()}</div>
-+      `;
++      const nameEl = document.createElement('div');
++      nameEl.className = 'name';
++      nameEl.textContent = `“${name.value.trim()}”`;
 +
++      const priceEl = document.createElement('div');
++      priceEl.className = 'price';
++      priceEl.textContent = formatPrice(price.value);
++
++      const noteEl = document.createElement('div');
++      noteEl.className = 'note';
++      noteEl.textContent = note.value.trim();
++
++      content.append(nameEl, priceEl, noteEl);
 +      card.append(thumb, content);
 +      grid.prepend(card);
 +      closeModal();
