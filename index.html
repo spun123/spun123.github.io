@@ -148,6 +148,32 @@
 
     const formatPrice = (value) => `${Number(value).toLocaleString('ru-RU')} ₽`;
 
+    const removeDiffArtifacts = () => {
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      const toClean = [];
+
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        const value = node.nodeValue?.trim() || '';
+
+        if (!value) continue;
+
+        if (
+          /^[-+]$/.test(value) ||
+          /^diff --git /.test(value) ||
+          /^@@ .*@@$/.test(value)
+        ) {
+          toClean.push(node);
+        }
+      }
+
+      toClean.forEach((node) => {
+        node.nodeValue = '';
+      });
+    };
+
+    removeDiffArtifacts();
+
     const openModal = () => {
       modal.classList.add('modal--open');
       modal.setAttribute('aria-hidden', 'false');
