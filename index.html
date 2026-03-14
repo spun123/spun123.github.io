@@ -155,26 +155,36 @@
 
     const removeDiffArtifacts = () => {
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-      const toClean = [];
 
       while (walker.nextNode()) {
         const node = walker.currentNode;
-        const value = node.nodeValue?.trim() || '';
+        const raw = node.nodeValue || '';
+        const trimmed = raw.trim();
 
-        if (!value) continue;
+        if (!trimmed) continue;
 
+        // Полностью удаляем служебные строки из unified diff
         if (
-          /^[-+]$/.test(value) ||
-          /^diff --git /.test(value) ||
-          /^@@ .*@@$/.test(value)
+          /^diff --git /.test(trimmed) ||
+          /^index [0-9a-f]+\.[0-9a-f]+/.test(trimmed) ||
+          /^@@ .*@@$/.test(trimmed) ||
+          /^---\s/.test(trimmed) ||
+          /^\+\+\+\s/.test(trimmed) ||
+          /^[-+]$/.test(trimmed)
         ) {
-          toClean.push(node);
+          node.nodeValue = '';
+          continue;
+        }
+
+        // Если перед контентом случайно остались "+ " или "- " из diff — убираем их
+        const normalized = raw
+          .replace(/(^|\n)(\s*)[+-]\s(?=\S)/g, '$1$2')
+          .replace(/\n{3,}/g, '\n\n');
+
+        if (normalized !== raw) {
+          node.nodeValue = normalized;
         }
       }
-
-      toClean.forEach((node) => {
-        node.nodeValue = '';
-      });
     };
 
     removeDiffArtifacts();
