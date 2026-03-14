@@ -56,15 +56,24 @@ def check_http_pages() -> list[CheckResult]:
     try:
         for page in PAGES:
             url = urljoin("http://127.0.0.1:8765/", page)
-            with urlopen(url, timeout=5) as response:
-                status = response.getcode()
-                body = response.read().decode("utf-8", errors="ignore")
-                has_markup = "<html" in body.lower() and "</html>" in body.lower()
+            try:
+                with urlopen(url, timeout=5) as response:
+                    status = response.getcode()
+                    body = response.read().decode("utf-8", errors="ignore")
+                    has_markup = "<html" in body.lower() and "</html>" in body.lower()
+                    results.append(
+                        CheckResult(
+                            name=page,
+                            ok=status == 200 and has_markup,
+                            message=f"status={status}, html_markup={has_markup}",
+                        )
+                    )
+            except Exception as e:
                 results.append(
                     CheckResult(
                         name=page,
-                        ok=status == 200 and has_markup,
-                        message=f"status={status}, html_markup={has_markup}",
+                        ok=False,
+                        message=f"error: {str(e)}",
                     )
                 )
     finally:
